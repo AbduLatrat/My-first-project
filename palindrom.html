@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Checker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: none;
+        }
+        
+        .palindrome {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .not-palindrome {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .examples {
+            margin-top: 30px;
+            text-align: left;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .examples h3 {
+            margin-bottom: 10px;
+            color: #444;
+        }
+        
+        .examples ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .examples li {
+            padding: 5px 0;
+            color: #555;
+        }
+        
+        .highlight {
+            font-weight: 600;
+            color: #6a11cb;
+        }
+        
+        .visualization {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .arrow {
+            font-size: 1.5rem;
+            color: #6a11cb;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PALINDROME CHECKER</h1>
+        <p class="description"><bold>ABDU LATIF</bold></p>
+        
+        <div class="input-group">
+            <input type="text" id="wordInput" placeholder="Enter a word or phrase..." autocomplete="off">
+        </div>
+        
+        <button id="checkBtn">Check Palindrome</button>
+        
+        <div id="visualization" class="visualization"></div>
+        
+        <div id="result" class="result"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wordInput = document.getElementById('wordInput');
+            const checkBtn = document.getElementById('checkBtn');
+            const resultDiv = document.getElementById('result');
+            const visualizationDiv = document.getElementById('visualization');
+            
+            // Function to check if a string is a palindrome
+            function isPalindrome(str) {
+                // Remove spaces and convert to lowercase
+                const cleanStr = str.replace(/\s+/g, '').toLowerCase();
+                
+                // Check if the string is empty
+                if (cleanStr.length === 0) return false;
+                
+                // Compare the string with its reverse
+                const reversedStr = cleanStr.split('').reverse().join('');
+                return cleanStr === reversedStr;
+            }
+            
+            // Function to create visualization
+            function createVisualization(str) {
+                const cleanStr = str.replace(/\s+/g, '').toLowerCase();
+                
+                if (cleanStr.length === 0) {
+                    visualizationDiv.innerHTML = '';
+                    return;
+                }
+                
+                const reversedStr = cleanStr.split('').reverse().join('');
+                
+                visualizationDiv.innerHTML = `
+                    <div>${cleanStr}</div>
+                    <div class="arrow">⇋</div>
+                    <div>${reversedStr}</div>
+                `;
+            }
+            
+            // Event listener for the check button
+            checkBtn.addEventListener('click', function() {
+                const inputValue = wordInput.value.trim();
+                
+                if (inputValue === '') {
+                    resultDiv.style.display = 'none';
+                    visualizationDiv.innerHTML = '';
+                    return;
+                }
+                
+                createVisualization(inputValue);
+                
+                if (isPalindrome(inputValue)) {
+                    resultDiv.textContent = `"${inputValue}" is a palindrome!`;
+                    resultDiv.className = 'result palindrome';
+                    resultDiv.style.display = 'block';
+                } else {
+                    resultDiv.textContent = `"${inputValue}" is not a palindrome.`;
+                    resultDiv.className = 'result not-palindrome';
+                    resultDiv.style.display = 'block';
+                }
+            });
+            
+            // Allow checking by pressing Enter key
+            wordInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    checkBtn.click();
+                }
+            });
+            
+            // Clear visualization when input is empty
+            wordInput.addEventListener('input', function() {
+                if (wordInput.value.trim() === '') {
+                    visualizationDiv.innerHTML = '';
+                    resultDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
